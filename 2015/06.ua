@@ -2,7 +2,7 @@ parsephrase ← {"turn on" "toggle" "turn off"} ∺(|2 ! ⌕⊢) 1⊗
 parsecoords ← . @\0- ∵(. 48≥ ∶ 57≤ ↧) ⊜parse
 parseinstr ← . parsecoords ∶ parsephrase ⊂
 
-coordtoarray ← 2_2↯ ⍘⊟ ,, -⌵1+ 1∶↯ ([1000.]↙)0⍛ ↷ ∵↧ ¯↻
+coordtoarray ← 2_2↯ ⍘⊟ ⊃(-⌵1+ 1∶↯ ⍛([1000.]↙)0)(∵↧) ¯↻
 foldbody ← ∶ . 1↘ coordtoarray ∶ ⊢
 
 "06" &fras
