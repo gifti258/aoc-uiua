@@ -1,17 +1,17 @@
 parseints ← ∵(|1 ⍣(;)(|1 !parse ⋯ ⍛(32↙)0□))
-parseconn ← . @ ≠ ⊜□ . ⍜(2↘ parseints)⇌ □ ∶ ⇌⊢ ⊟
+parseconn ← . @ ≠ ⊜□ . ¯2↘ parseints □ ∶ ⇌⊢ ⊟
 
 execinstr ← (
   ∶{"AND" "LSHIFT" "NOT" "OR" "RSHIFT"}∶⊗
-  [(⍘⊟ ↧ □)
+  [(/↧ □)
    (⍘⊟ ∷! ∶ ⍘⋯ ¯↘ ⍛(¯32↙)0□)
    (¬)
-   (⍘⊟ ↥ □)
+   (/↥ □)
    (⍘⊟ ∷! ∶ ⍘⋯ ↘ ⍛(32↙)0□)]!
   .⊂ 1↙
 )
 
-checkinstr ← . ⧻1= (|1 
+checkinstr ← . ⧻1= (|1
   . ¯1↻⇌
   . ⊢
   ∶ 1↘
