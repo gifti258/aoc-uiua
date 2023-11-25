@@ -1,19 +1,19 @@
-"08" &fras
-. @\n≠ ⊜□
-.
+Input ← "08" &fras
 
-∵(|1
-  ! . @\\= \(→.+2◿×)
-  ∶ "\\x"⌕
-  , ¯1↘ × /+ 2×
-  ∶ /+ +
-  2+
-) /+
-1350= .⍤
+Part! ← . @\n≠ ⊜(^1.2∩/+ + 2+) /+
 
-∵(|1
-  ! . @" = /+
-  ∶ @\\ = /+ +
-  2+
-) /+
-2085= .⍤
+EscapeSequences ← @\\= \(¬↧)
+AsciiEscapes ← "\\x" ⌕
+PartI ← ⊃(AsciiEscapes|EscapeSequences) ⊃(× 2×)∘
+
+Quotes ← @" =
+Backslashes ← @\\ =
+PartII ← ⊃(Quotes|Backslashes)
+
+Input ⊃(
+  Part!PartI
+  ⊃(1350≍)∘ ⍤
+|
+  Part!PartII
+  ⊃(2085≍)∘ ⍤
+)

@@ -1,19 +1,25 @@
-"05" &fras
-. @\n≠ ⊜·
-.
+Input ← "05" &fras
+Parse ← . @\n≠ ⊜∘
 
-≡(
-  . ∵("aeiou"∶∊) /+ 3≥
-  ∶ 2◫
-  . ≡(⍘⊟ =) /↥
-  ∶ ["ab" "cd" "pq" "xy"]∊ /↥¬
-  ↧↧
-) /+
-236= .⍤
+ThreeVowels ← "aeiou" :∊ /+ 3≥
+DoubleLetter ← 2◫ ⍉ ⍘⊟ = /↥
+NoForbidden ← 2◫ "abcdpqxy" 4_2↯ ∊ /↥ ¬
 
-≡(
-  . 2◫ .⧻⇡ ∶⊛ ⊕(.⊞(- 1>) ♭ /↥) /↥
-  ∶ 3◫ ≡([0 2]⊏ ⍘⊟ =) /↥
-  ↧
-)/+
-51= .⍤
+NiceI ← [⊃(ThreeVowels|DoubleLetter|NoForbidden)] /↧
+
+TwoPairs ← 2◫ ⊃(⧻⇡)⊛ ⊕(.⊞- ♭ 1> /↥) /↥
+Sandwich ← 3◫ ≡(.⇌ ∩⊢ =) /↥
+
+NiceII ← ⊃(TwoPairs|Sandwich) ↧
+
+Part! ← ≡^1/+
+PartI ← Part!NiceI
+PartII ← Part!NiceII
+
+Input Parse ⊃(
+  PartI
+  ⊃(236≍)∘ ⍤
+|
+  PartII
+  ⊃(51≍)∘ ⍤
+)

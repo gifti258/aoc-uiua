@@ -1,17 +1,23 @@
-parsedims ← . @x≠ ⊜parse
+Input ← "02" &fras
+ParseDims ← . @x≠ ⊜parse
+Transform ← . @\n≠ ⊜ParseDims
 
-faceareas ← .⊞× 3⇡ .⊞≠ × ♭
-smallestface ← .⌂⊏ 2↙
-paper ← . faceareas/+ ∶ smallestface/× +
+SmallestFace ← .⍏⊏ 2↙
 
-ribbon ← . smallestface/+ 2× ∶ /× +
+Surface ← .1↻ × /+ 2×
+Extra ← SmallestFace /×
+Paper ← ⊃(Surface|Extra) +
+PartI ← ≡Paper /+
 
-"02" &fras
-. @\n≠ ⊜parsedims
-.
+Perimeter ← SmallestFace /+ 2×
+Bow ← /×
+Ribbon ← ⊃(Perimeter|Bow) +
+PartII ← ≡Ribbon /+
 
-≡paper /+
-1598415= .⍤
-
-≡ribbon /+
-3812909= .⍤
+Input Transform ⊃(
+  PartI
+  ⊃(1598415≍)∘ ⍤
+|
+  PartII
+  ⊃(3812909≍)∘ ⍤
+)

@@ -1,61 +1,47 @@
-bitarray ← ⋯ ⍛(32↙)0
+Input ← "04" &fras ¯1↘
 
-S ← [7 12 17 22 5 9 14 20 4 11 16 23 6 10 15 21]
-K ← 64⇡ 1+ ○ ⌵ 2 32ⁿ × ⌊ ∵bitarray
+Bits ← ⋯ ⬚0(32↙)
+Add ← ∩⍘⋯ + ∵Bits
 
-A ← 1732584193 bitarray
-B ← 4023233417 bitarray
-C ← 2562383102 bitarray
-D ← 271733878 bitarray
+InitialState ← 16⇡ ¯1_2↯ ≡⇌ ♭ ⊃⇌∘ ⊂ ⋯ 4_32↯
 
-F ← [(→(∶.¬)∷↧↥)
-     (∶→(.¬)∷↧↥)
-     (≠ ≠)
-     (¬→∶↥≠)]
+PadZeroes ← 128:⊂ .⧻ ⍜(56- 64÷)⌈ ⬚0↙ ⋯ ♭
+PadLength ← ⧻ 8× ⋯ ⬚0(64↙)
+PrepareMessage ← utf ⊃(PadLength|PadZeroes) ⊂ ¯1_1_16_32↯
 
-G ← [1_0 5_1 3_5 7_0]
+S ← [7_12_17_22 5_9_14_20 4_11_16_23 6_10_15_21] ≡(4↯) ♭
+K ← 64⇡ 1+ ○ ⌵ 2 32ⁿ × ⌊ ∵Bits
+G ← 64⇡ 1_5_3_7 ,16÷⌊ 0_1_5_0 , ∩⊏ ⊙× + 16◿
 
-zeropad ← 128∶⊂ .⧻ 56∶- 0∶↯ ∶⊂
-lenpad ← ⧻ 8× ⍜(⍛(64↙)0 8_8↯)⋯ ∶⊂
-M ← @\0- . zeropad ∶ lenpad ⋯ 64_4_8↯ ≡♭
+# st i -- F(B C D)
+F ← ⊓(|1.3 1↘ /∘|16÷⌊) (⊙: ,¬ ∩↧ ↥|: ,¬ ∩↧ ↥|≠≠|⊙: ¬ ↥ ≠)
 
-add ← ∷⍘⋯ + ⋯ ⍛(32↙)0
-
-mdfive ← (
-  M A∶ D C B A 0
-  64⍥(
-    [0 4 3 2 1 0 5 0 2 0 4 2 3 5]⇵
-    16÷⌊ F∶⊡ ! add # A+F(D C B)
-    →(. →(16÷⌊ G∶⊡ ⍘⊟) ×+ 16◿ ⊡) add # +Mg
-    , K∶⊡ add # +Ki
-    ∶ . 4◿ ∶ 16÷⌊ 4× + S∶⊡ ¯↻ # <<s
-    add # +B
-    ∶→∶ 1+
-  )
-  [1 6]⇵ add 4_8↯ ⍜♭⇌
+# st m i -- b, Si, Ki, Mi, F | st -- st
+Operation ← (
+  ⊃(⋅⋅∘ 1⊡|⊙S ⊡|⊙K ⊡|⊙(∘G) ⊡⊡|⟜F|⋅⋅∘)
+  ⍜⊢(Add Add Add :¯↻ Add) ¯1↻
 )
+# st m i -- st
+HandleBlock ← ⊙⊙. ∧Operation Add
+MDFive ← ⊙InitialState PrepareMessage 64⇡¤ ∧HandleBlock 16_8↯ ≡⇌ ♭
 
-answer ← (|1 
-  4×∶ 0 ∞⍥(
-    1+ ,,∶$"__" mdfive
-    [3 0 1 2 3]⇵↙ 0=/↧ ·_(1⎋)!
-  ) →(;;)
-)
+Test! ← ⊃(MDFive ^0 4×↙ 0= /↧)∘ ⍤
+Part! ← 1 ⍢(,, :$"__" Test!^0¬|1+) ⟜∘
+
+PartI ← Part!5
+PartII ← Part!6
 
 0⍥(
-  "04" &fras ¯1↘
-  .
-
-  5 answer
-  346386= .⍤
-
-  6 answer
-  9958218= .⍤
+  Input ⊃(
+    PartI
+    ⊃(346386≍)∘ ⍤
+  |
+    PartII
+    ⊃(9958218≍)∘ ⍤
+  )
 )
 
-test ← 4×∶ mdfive ∶↙ 0=/↧ .⍤
-
-"abcdef609043" 5 test
-"pqrstuv1048970" 5 test
-"iwrupvqb346386" 5 test
-"iwrupvqb9958218" 6 test
+"abcdef609043" Test!5
+"pqrstuv1048970" Test!5
+"iwrupvqb346386" Test!5
+"iwrupvqb9958218" Test!6

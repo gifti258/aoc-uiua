@@ -1,10 +1,16 @@
-lookandsay ← ⍥(. ⊜(❥⊢⧻ ⊟ ∶⊂))
+Input ← "10" &fras
+Transform ← ¯1↘ @0-
 
-"10" &fras ¯1↘ @0-
-.
+LookAndSay ← ⍥(. ⊜(⊃⊢⧻ ⊟) ♭) ⧻
 
-40 lookandsay
-252594= .⍤
+PartI ← 40 LookAndSay
+PartII ← 50 LookAndSay
 
-50 lookandsay
-3579328= .⍤
+Input Transform ⊃(
+  PartI
+  ⊃(252594≍)∘ ⍤
+|
+  # takes too long
+  # PartII
+  # ⊃(3579328≍)∘ ⍤
+)

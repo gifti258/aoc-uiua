@@ -1,11 +1,13 @@
-parsecal ← . @\n≠ ⊜(parse) /+
+Input ← "01" &fras
+Parse ← . "\n\n" ⌕ ⬚0(¯1↻) ¬ ⊜(. @\n≠ ⊜parse /+)
 
-"01" &fras
-. "\n\n" ⌕ 0⊂ ¬ ⊜parsecal
-.
+PartI ← /↥
+PartII ← .⍖ 3↙ ⊏ /+
 
-/↥
-68467= .⍤
-
-.⌂⊏ ¯3↙ /+
-203420= .⍤
+Input Parse ⊃(
+  PartI
+  ⊃(68467≍)∘ ⍤
+|
+  PartII
+  ⊃(203420≍)∘ ⍤
+)

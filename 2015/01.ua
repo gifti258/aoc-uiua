@@ -1,9 +1,13 @@
-"01" &fras
-@(- 2× ¬
-.
+Input ← "01" &fras
+Transform ← @(- 2× ¬
 
-/+
-232= .⍤
+PartI ← /+
+PartII ← \+ ¯1⊗ 1+
 
-\+ ¯1⊗ 1+
-1783= .⍤
+Input Transform ⊃(
+  PartI
+  ⊃(232≍)∘ ⍤
+|
+  PartII
+  ⊃(1783≍)∘ ⍤
+)

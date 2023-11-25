@@ -1,17 +1,18 @@
-parsephrase ← {"turn on" "toggle" "turn off"} ∺(|2 ! ⌕⊢) 1⊗
-parsecoords ← . @\0- ∵(. 48≥ ∶ 57≤ ↧) ⊜parse
-parseinstr ← . parsecoords ∶ parsephrase ⊂
+Input ← "06" &fras
+ParseLines! ← . @\n≠ ⊜^1
+ParseInstrs ← ParseLines!(¤ "nfg" ≡(@o⊂ ⌕ /↥) ⊚⊢)
+ParseCoords ← ParseLines!(⊃(∘|@0≥|@9≤) ↧ ⊜parse)
+Transform ← ⊃(ParseCoords|ParseInstrs)
 
-coordtoarray ← 2_2↯ ⍘⊟ ⊃(-⌵1+ 1∶↯ ⍛([1000.]↙)0)↧ ¯↻
-foldbody ← ∶ . 1↘ coordtoarray ∶ ⊢
+LightMatrix ← 2_2↯ ⍘⊟ ⊃(- 1+ ⊙1↯ ⬚0([1000.]↙))∘ ¯↻
+Part! ← ∧(⊙LightMatrix ^3) ♭/+
+PartI ← Part!(↥|¬↧|≠)
+PartII ← Part!(+|-0↥|2×+)
 
-"06" &fras
-. @\n≠ ⊜parseinstr
-0 [1000.]↯
-,,
-
-∧(foldbody ↥_≠_(¬↧)!) ♭ /+
-377891= .⍤
-
-∧(foldbody +_(2×+)_(-0↥)!) ♭ /+
-14110788= .⍤
+0 [1000.]↯ Input Transform ⊃(
+  PartI
+  ⊃(377891≍)∘ ⍤
+|
+  PartII
+  ⊃(14110788≍)∘ ⍤
+)

@@ -1,20 +1,17 @@
-valid ← (
-  . 3◫ ≡(2◫ ≡/- [1 1]≅) /↥
-  , "iol"@a-∊ /↥¬ ↧
-  ∶ 2◫ . ≡(⍘⊟ =) ▽ ≡⊢ ⊝⧻ 2≥ ↧
-)
+Input ← "11" &fras ¯1↘
 
-strtonum ← /(26×+)
-numtostr ← →[] ∞⍥(26 ❥◿(÷⌊) →⊂ . 0= ·_(1⎋)!) ;
+StrToNum ← /(26×+)
+NumToStr ← ⊙[] ⍢(0≠|26 ⊃◿(÷⌊) ⊙⊂) ⋅∘
 
-next ← ∞⍥(1+ . numtostr . valid ·_(1⎋)! ;) @a+
+IncreasingStraight ← 3◫ ≡(2◫ ≡/- 1= /↧) /↥
+NoConfusing ← "iol"@a- ∊ /↥¬
+TwoPairs ← 2◫ . ⍉⍘⊟= ▽ ⊝⧻ 2≥
+Valid ← [⊃(IncreasingStraight|NoConfusing|TwoPairs)] /↧
 
-"11" &fras ¯1↘
-@a- strtonum
+Next ← ⍜(@a-|StrToNum ⍢(1+ . NumToStr Valid ¬)∘ NumToStr)
 
-next
-"hxbxxyzz"≅ .⍤
+PartI ← Input Next
+PartII ← PartI Next
 
-next
-"hxcaabcc"≅ .⍤
-;
+PartI ⊃("hxbxxyzz"≍)∘ ⍤
+PartII ⊃("hxcaabcc"≍)∘ ⍤

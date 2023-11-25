@@ -1,38 +1,46 @@
-parseints ← ∵(|1 ⍣(;)(|1 !parse ⋯ ⍛(32↙)0□))
-parseconn ← . @ ≠ ⊜□ . ¯2↘ parseints □ ∶ ⇌⊢ ⊟
+Input ← "07" &fras
 
-execinstr ← (
-  ∶{"AND" "LSHIFT" "NOT" "OR" "RSHIFT"}∶⊗
-  [(/↧ □)
-   (⍘⊟ ∷! ∶ ⍘⋯ ¯↘ ⍛(¯32↙)0□)
-   (¬)
-   (/↥ □)
-   (⍘⊟ ∷! ∶ ⍘⋯ ↘ ⍛(32↙)0□)]!
-  .⊂ 1↙
+# input -- vs ks
+Transform ← . @\n≠ ⊜(. @ ≠ ⊜(⍣parse⟜∘ □) ⇌⊃(2↘ 1↻ □)⊢ ⊟) ⍉ ⍘⊟
+
+# vs ks -- vs' vs* ks' ks*
+SplitWires ← ⊙⊃∘≡(⊢⊔ type) , ∩(⊕□ ⬚([]□)(2↙) ⍘⊟ ∩⊔)
+
+# vs' vs* ks' ks* -- vs' ks'
+ReplaceKnown ← : ⊙(∧≡(⊙⊙⊔ ≡(⊙, = (⋅∘|⟜⊢)) □))
+
+CanCompute ← 1↘ ⊐≡type ⊃(⧻0>|/↥¬) ↧
+
+LookupInstr ← ⊙{"NOT" "AND" "OR" "LSHIFT" "RSHIFT"} ⊗
+
+UnaryOp! ← ⍜(⊔⊢ ⊔⋯|⬚0(16↙) ^1)
+BinaryOp! ← ⍜(⊔ ≡⊔ ⋯)/^2
+ShiftOp!! ← ⍜(⊔ ≡⊔|⍘⊟ ⍜⋯⬚0(16↙ :^1↘ 16^1↙))
+
+NOT ← UnaryOp!¬
+AND ← BinaryOp!↧
+OR ← BinaryOp!↥
+LSHIFT ← ShiftOp!!¯¯
+RSHIFT ← ShiftOp!!∘∘
+
+ExecuteInstr ← (NOT|AND|OR|LSHIFT|RSHIFT)
+
+ComputeSignal ← ⊃(1↘)⊢ LookupInstr ExecuteInstr
+
+# vs ks -- vs' ks
+ComputeSignals ← ⊙≡⍜⊔(⊃∘CanCompute (∘|ComputeSignal))
+
+# vs ks -- a
+Assemble ← (
+  SplitWires ⍢("a"□∊¬|ReplaceKnown ComputeSignals SplitWires)
+  ⟜("a"□⊗) ⊡ ⟜(⊢⊔)
 )
 
-checkinstr ← . ⧻1= (|1
-  . ¯1↻⇌
-  . ⊢
-  ∶ 1↘
-  . ∵(|1 ! type 0=) /↧ (;)_(execinstr∶)! ;
-)_·!
+Input Transform ,,
 
-assemble ← ∞⍥(
-  . ≡(|1 1⊡! . ⧻ 1= ∶ ⊢! type 0= ↧) ⊕□ ⍘⊟ ∷!
-  , "a"□∊ . /↥ ·_(1⎋)! ;
-  ∧(∺(|2 ⍜(→∶ ∺(∶ ⍘⊟ ∶ !⊢ ∶→∶, ≅ ∶_·!;))(⍘⊟∶!)))
-  ≡(⍜(checkinstr)(⍘⊟∶!))
-) ∶; ▽ ⊢1⊡ . ⊢! ⍘⋯
+Assemble
+.⊃(956≍)∘ ⍤
 
-"07" &fras
-. @\n≠ ⊜parseconn
-.
-
-assemble
-956= .⍤
-
-∶∺(⍘⊟ .→(∶→∶) "b"□≅ ∶_·!; ∶⊟)
-assemble
-40149= .⍤
-;
+⊃(∘|⋅⊙∘|⋅∘) ⊙("b"□⊗ ⍜⊡⋅({∘}□))
+Assemble
+⊃(40149≍)∘ ⍤
